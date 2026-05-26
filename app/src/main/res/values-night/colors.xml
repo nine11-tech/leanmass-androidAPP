@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="input_text">#101917</color>
+    <color name="input_hint">#66756F</color>
+</resources>

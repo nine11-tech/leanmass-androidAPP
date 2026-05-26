@@ -7,12 +7,15 @@ import com.anass.leanmasscalculator.R
 import com.anass.leanmasscalculator.databinding.ActivityProfileBinding
 import com.anass.leanmasscalculator.ui.auth.LoginActivity
 import com.anass.leanmasscalculator.util.AppDependencies
+import com.anass.leanmasscalculator.util.SecureScreenHelper
+import com.anass.leanmasscalculator.util.SecurityChecks
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SecureScreenHelper.enableSecureMode(window)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,11 +38,27 @@ class ProfileActivity : AppCompatActivity() {
             R.string.last_lbm,
             stats.last?.let { getString(R.string.kg_value, it.lbmKg) } ?: getString(R.string.empty_lbm)
         )
+        showSecurityStatus()
         binding.logoutButton.setOnClickListener { logout() }
     }
 
+    private fun showSecurityStatus() {
+        val status = SecurityChecks.getSecurityStatus(this)
+        binding.securityStatusText.text = getString(
+            if (status.isNormal) R.string.security_status_normal else R.string.security_status_warning
+        )
+        binding.securityStatusDetails.text = getString(
+            R.string.security_status_details,
+            yesNo(status.rooted),
+            yesNo(status.debuggerAttached),
+            yesNo(status.appDebuggable)
+        )
+    }
+
+    private fun yesNo(value: Boolean): String = getString(if (value) R.string.yes else R.string.no)
+
     private fun logout() {
-        AppDependencies.sessionManager(this).clear()
+        AppDependencies.sessionManager(this).clearSession()
         startActivity(Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })

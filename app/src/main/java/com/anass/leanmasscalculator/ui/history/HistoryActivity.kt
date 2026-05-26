@@ -8,6 +8,7 @@ import com.anass.leanmasscalculator.R
 import com.anass.leanmasscalculator.data.local.entity.CalculationEntity
 import com.anass.leanmasscalculator.databinding.ActivityHistoryBinding
 import com.anass.leanmasscalculator.util.AppDependencies
+import com.anass.leanmasscalculator.util.SecureScreenHelper
 import com.google.android.material.snackbar.Snackbar
 
 class HistoryActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class HistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SecureScreenHelper.enableSecureMode(window)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

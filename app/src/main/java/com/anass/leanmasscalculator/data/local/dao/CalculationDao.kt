@@ -21,6 +21,7 @@ class CalculationDao(private val dbHelper: LeanMassDatabaseHelper) {
     }
 
     fun findAllForUser(userId: Long): List<CalculationEntity> {
+        // MASVS-STORAGE / MASVS-PRIVACY: history reads are scoped to the authenticated user.
         return dbHelper.readableDatabase.query(
             "calculations",
             null,
@@ -37,6 +38,7 @@ class CalculationDao(private val dbHelper: LeanMassDatabaseHelper) {
     }
 
     fun delete(id: Long, userId: Long): Int {
+        // MASVS-STORAGE: item deletion is scoped to the authenticated user.
         return dbHelper.writableDatabase.delete(
             "calculations",
             "id = ? AND user_id = ?",
@@ -45,6 +47,7 @@ class CalculationDao(private val dbHelper: LeanMassDatabaseHelper) {
     }
 
     fun clearForUser(userId: Long): Int {
+        // MASVS-STORAGE: bulk deletion only removes rows owned by the authenticated user.
         return dbHelper.writableDatabase.delete(
             "calculations",
             "user_id = ?",

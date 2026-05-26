@@ -2,6 +2,7 @@
     <style name="Base.Theme.LeanMassCalculator" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
         <item name="colorSecondary">@color/secondary</item>
         <item name="android:colorAccent">@color/secondary</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -14,7 +15,7 @@
 
     <style name="Widget.LeanMass.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.LeanMass.Card</item>
-        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardBackgroundColor">@color/card_surface</item>
         <item name="strokeColor">@color/surface_variant</item>
         <item name="strokeWidth">1dp</item>
     </style>

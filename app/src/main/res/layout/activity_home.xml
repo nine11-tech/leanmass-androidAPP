@@ -182,13 +182,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="@string/weight_kg"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/weightInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -197,13 +200,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:hint="@string/height_cm"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/heightInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
@@ -221,7 +227,8 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:text="@string/male" />
+                        android:text="@string/male"
+                        android:textColor="@color/primary" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/femaleButton"
@@ -229,7 +236,8 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:text="@string/female" />
+                        android:text="@string/female"
+                        android:textColor="@color/primary" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 <com.google.android.material.button.MaterialButton
@@ -238,6 +246,7 @@
                     android:layout_height="56dp"
                     android:layout_marginTop="20dp"
                     android:text="@string/calculate"
+                    android:textColor="@color/on_primary"
                     app:icon="@drawable/ic_calculator" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -296,6 +305,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="18dp"
             android:text="@string/history"
+            android:textColor="@color/primary"
             app:icon="@drawable/ic_history" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

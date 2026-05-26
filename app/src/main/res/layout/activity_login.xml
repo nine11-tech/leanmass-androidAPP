@@ -53,13 +53,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/emailInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -69,13 +72,16 @@
                     android:layout_marginTop="14dp"
                     android:hint="@string/password"
                     app:boxBackgroundMode="outline"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -83,7 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="22dp"
-                    android:text="@string/login" />
+                    android:text="@string/login"
+                    android:textColor="@color/on_primary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/registerLink"
@@ -91,7 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Create a new account" />
+                    android:text="Create a new account"
+                    android:textColor="@color/primary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

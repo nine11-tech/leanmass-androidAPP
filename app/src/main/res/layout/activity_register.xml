@@ -46,13 +46,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/full_name"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/fullNameInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -61,13 +64,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:hint="@string/email"
-                    app:boxBackgroundMode="outline">
+                    app:boxBackgroundMode="outline"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/emailInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -77,13 +83,16 @@
                     android:layout_marginTop="14dp"
                     android:hint="@string/password"
                     app:boxBackgroundMode="outline"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -93,13 +102,16 @@
                     android:layout_marginTop="14dp"
                     android:hint="@string/confirm_password"
                     app:boxBackgroundMode="outline"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:hintTextColor="@color/input_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/confirmPasswordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textColor="@color/input_text"
+                        android:textColorHint="@color/input_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -107,7 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="22dp"
-                    android:text="@string/register" />
+                    android:text="@string/register"
+                    android:textColor="@color/on_primary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginLink"
@@ -115,7 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Already have an account? Login" />
+                    android:text="Already have an account? Login"
+                    android:textColor="@color/primary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

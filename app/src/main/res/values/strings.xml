@@ -48,4 +48,13 @@
     <string name="clear">Clear</string>
     <string name="valid_weight_error">Enter a valid weight.</string>
     <string name="valid_height_error">Enter a valid height.</string>
+    <string name="session_expired">Session expired. Please log in again.</string>
+    <string name="security_section_title">Security status</string>
+    <string name="security_status_normal">Security status: normal</string>
+    <string name="security_status_warning">Warning: debug/root environment detected</string>
+    <string name="security_status_details">Rooted: %1$s\nDebugger attached: %2$s\nDebuggable build: %3$s</string>
+    <string name="security_info_title">Security hardening</string>
+    <string name="security_info_body">PBKDF2 password hashing, session expiration, backup exclusion, secure screens, user-scoped SQLite access, and MASVS-based runtime checks are enabled.</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 </resources>

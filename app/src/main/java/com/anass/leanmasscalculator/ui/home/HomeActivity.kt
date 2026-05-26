@@ -15,6 +15,7 @@ import com.anass.leanmasscalculator.ui.auth.LoginActivity
 import com.anass.leanmasscalculator.ui.history.HistoryActivity
 import com.anass.leanmasscalculator.ui.profile.ProfileActivity
 import com.anass.leanmasscalculator.util.AppDependencies
+import com.anass.leanmasscalculator.util.SecureScreenHelper
 import com.google.android.material.snackbar.Snackbar
 
 class HomeActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SecureScreenHelper.enableSecureMode(window)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

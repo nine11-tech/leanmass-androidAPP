@@ -14,33 +14,37 @@ class AuthRepository(
         val cleanName = fullName.trim()
         val cleanEmail = email.trim().lowercase()
 
-        AuthValidator.validateRequired(cleanName, "Full name")?.let { return AuthResult.Error(it) }
-        if (!AuthValidator.isValidEmail(cleanEmail)) return AuthResult.Error("Enter a valid email address.")
-        AuthValidator.validatePassword(password)?.let { return AuthResult.Error(it) }
-        if (password != confirmPassword) return AuthResult.Error("Passwords do not match.")
+        AuthValidator.validateFullName(cleanName)?.let { return AuthResult.Error(it) }
+        AuthValidator.validateEmail(cleanEmail)?.let { return AuthResult.Error(it) }
+        AuthValidator.validatePasswordStrength(password)?.let { return AuthResult.Error(it) }
+        AuthValidator.validatePasswordConfirmation(password, confirmPassword)?.let { return AuthResult.Error(it) }
         if (userDao.findByEmail(cleanEmail) != null) return AuthResult.Error("An account already exists for this email.")
 
         val salt = PasswordHasher.createSalt()
         val hash = PasswordHasher.hash(password, salt)
         val id = userDao.insert(cleanName, cleanEmail, hash, salt)
-        sessionManager.saveSession(id)
-        return AuthResult.Success(userDao.findById(id)!!)
+        val user = userDao.findById(id)!!
+        sessionManager.saveSession(user)
+        return AuthResult.Success(user)
     }
 
     fun login(email: String, password: String): AuthResult {
         val cleanEmail = email.trim().lowercase()
-        if (!AuthValidator.isValidEmail(cleanEmail)) return AuthResult.Error("Enter a valid email address.")
+        AuthValidator.validateEmail(cleanEmail)?.let { return AuthResult.Error(it) }
         if (password.isBlank()) return AuthResult.Error("Password is required.")
 
         val user = userDao.findByEmail(cleanEmail) ?: return AuthResult.Error("Invalid email or password.")
         if (!PasswordHasher.verify(password, user.passwordSalt, user.passwordHash)) {
             return AuthResult.Error("Invalid email or password.")
         }
-        sessionManager.saveSession(user.id)
+        sessionManager.saveSession(user)
         return AuthResult.Success(user)
     }
 
-    fun currentUser(): UserEntity? = sessionManager.getUserId()?.let(userDao::findById)
+    fun currentUser(): UserEntity? {
+        if (!sessionManager.isSessionValid()) return null
+        return sessionManager.getUserId()?.let(userDao::findById)
+    }
 }
 
 sealed class AuthResult {

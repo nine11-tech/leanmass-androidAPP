@@ -7,6 +7,7 @@ import com.anass.leanmasscalculator.data.repository.AuthResult
 import com.anass.leanmasscalculator.databinding.ActivityRegisterBinding
 import com.anass.leanmasscalculator.ui.home.HomeActivity
 import com.anass.leanmasscalculator.util.AppDependencies
+import com.anass.leanmasscalculator.util.SecureScreenHelper
 import com.google.android.material.snackbar.Snackbar
 
 class RegisterActivity : AppCompatActivity() {
@@ -14,6 +15,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SecureScreenHelper.enableSecureMode(window)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

@@ -60,3 +60,7 @@ Thresholds live in `LeanMassConfig`, so they can be adjusted without changing ac
 5. Select the phone as the target device and press Run.
 
 No emulator is required. SQLite is the main persistence system and works offline. Firebase or Firestore can be added later behind the repository layer if cloud sync becomes required.
+
+## Device Check
+
+The app was installed and tested successfully on a real Android phone.

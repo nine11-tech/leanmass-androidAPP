@@ -3,6 +3,7 @@ package com.anass.leanmasscalculator.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.anass.leanmasscalculator.R
 import com.anass.leanmasscalculator.databinding.ActivityProfileBinding
 import com.anass.leanmasscalculator.ui.auth.LoginActivity
 import com.anass.leanmasscalculator.util.AppDependencies
@@ -25,9 +26,15 @@ class ProfileActivity : AppCompatActivity() {
         binding.nameText.text = user.fullName
         binding.emailText.text = user.email
         val stats = AppDependencies.calculationRepository(this).stats(user.id)
-        binding.totalText.text = "Total calculations: ${stats.total}"
-        binding.averageText.text = "Average LBM: ${stats.averageLbm?.let { String.format("%.1f kg", it) } ?: "-- kg"}"
-        binding.lastText.text = "Last LBM: ${stats.last?.let { String.format("%.1f kg", it.lbmKg) } ?: "-- kg"}"
+        binding.totalText.text = getString(R.string.total_calculations, stats.total)
+        binding.averageText.text = getString(
+            R.string.average_lbm,
+            stats.averageLbm?.let { getString(R.string.kg_value, it) } ?: getString(R.string.empty_lbm)
+        )
+        binding.lastText.text = getString(
+            R.string.last_lbm,
+            stats.last?.let { getString(R.string.kg_value, it.lbmKg) } ?: getString(R.string.empty_lbm)
+        )
         binding.logoutButton.setOnClickListener { logout() }
     }
 

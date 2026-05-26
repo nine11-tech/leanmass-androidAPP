@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
-        binding.welcomeText.text = "Hi, ${user!!.fullName}"
+        binding.welcomeText.text = getString(R.string.welcome_user, user!!.fullName)
         binding.calculateButton.setOnClickListener { calculate() }
         binding.historyButton.setOnClickListener { startActivity(Intent(this, HistoryActivity::class.java)) }
         binding.profileButton.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
@@ -49,11 +49,11 @@ class HomeActivity : AppCompatActivity() {
         val height = CalculatorInputValidator.parsePositiveDouble(binding.heightInput.text?.toString().orEmpty())
 
         if (weight == null) {
-            binding.weightLayout.error = "Enter a valid weight."
+            binding.weightLayout.error = getString(R.string.valid_weight_error)
             return
         }
         if (height == null) {
-            binding.heightLayout.error = "Enter a valid height."
+            binding.heightLayout.error = getString(R.string.valid_height_error)
             return
         }
 
@@ -62,12 +62,12 @@ class HomeActivity : AppCompatActivity() {
             .calculateAndSave(user!!.id, weight, height, gender)
         showResult(calculation)
         refreshStats(user!!.id)
-        Snackbar.make(binding.root, "Calculation saved to history.", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, getString(R.string.calculation_saved), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun showResult(calculation: CalculationEntity) {
         binding.resultCard.visibility = View.VISIBLE
-        binding.resultValueText.text = String.format("%.1f kg", calculation.lbmKg)
+        binding.resultValueText.text = getString(R.string.kg_value, calculation.lbmKg)
         binding.resultMessageText.text = calculation.message
         val color = if (calculation.isSatisfactory) R.color.success else R.color.warning
         val container = if (calculation.isSatisfactory) R.color.success_container else R.color.warning_container
@@ -80,8 +80,8 @@ class HomeActivity : AppCompatActivity() {
     private fun refreshStats(userId: Long) {
         val stats = AppDependencies.calculationRepository(this).stats(userId)
         binding.totalText.text = stats.total.toString()
-        binding.averageText.text = stats.averageLbm?.let { String.format("%.1f kg", it) } ?: "-- kg"
-        binding.lastLbmText.text = stats.last?.let { String.format("%.1f kg", it.lbmKg) } ?: "-- kg"
+        binding.averageText.text = stats.averageLbm?.let { getString(R.string.kg_value, it) } ?: getString(R.string.empty_lbm)
+        binding.lastLbmText.text = stats.last?.let { getString(R.string.kg_value, it.lbmKg) } ?: getString(R.string.empty_lbm)
     }
 
     private fun clearErrors() {

@@ -35,13 +35,22 @@ class HistoryAdapter(
     inner class HistoryViewHolder(private val binding: ItemHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CalculationEntity) {
             val context = binding.root.context
-            binding.lbmText.text = String.format("%.1f kg", item.lbmKg)
+            binding.lbmText.text = context.getString(R.string.kg_value, item.lbmKg)
             binding.statusText.text = item.message
             binding.statusText.setTextColor(
                 ContextCompat.getColor(context, if (item.isSatisfactory) R.color.success else R.color.warning)
             )
-            val gender = if (item.gender == Gender.MALE) "Male" else "Female"
-            binding.detailsText.text = String.format("%s - %.1f kg - %.1f cm", gender, item.weightKg, item.heightCm)
+            val gender = if (item.gender == Gender.MALE) {
+                context.getString(R.string.male)
+            } else {
+                context.getString(R.string.female)
+            }
+            binding.detailsText.text = context.getString(
+                R.string.history_item_details,
+                gender,
+                item.weightKg,
+                item.heightCm
+            )
             binding.dateText.text = DateFormatter.format(item.createdAt)
             binding.deleteButton.setOnClickListener { onDelete(item) }
         }

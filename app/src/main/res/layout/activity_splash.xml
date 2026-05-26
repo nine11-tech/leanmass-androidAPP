@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Lean body mass tracking"
+            android:text="@string/splash_subtitle"
             android:textColor="@color/text_secondary"
             android:textSize="16sp" />
     </LinearLayout>

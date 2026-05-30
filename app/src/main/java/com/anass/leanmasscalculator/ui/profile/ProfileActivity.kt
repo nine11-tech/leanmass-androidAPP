@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.anass.leanmasscalculator.R
+import com.anass.leanmasscalculator.data.local.entity.UserEntity
 import com.anass.leanmasscalculator.databinding.ActivityProfileBinding
 import com.anass.leanmasscalculator.ui.auth.LoginActivity
 import com.anass.leanmasscalculator.util.AppDependencies
@@ -19,6 +20,11 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.logoutButton.setOnClickListener { logout() }
+    }
+
+    override fun onResume() {
+        super.onResume()
         val authRepository = AppDependencies.authRepository(this)
         val user = authRepository.currentUser()
         if (user == null) {
@@ -26,6 +32,10 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
+        bindProfile(user)
+    }
+
+    private fun bindProfile(user: UserEntity) {
         binding.nameText.text = user.fullName
         binding.emailText.text = user.email
         val stats = AppDependencies.calculationRepository(this).stats(user.id)
@@ -39,7 +49,6 @@ class ProfileActivity : AppCompatActivity() {
             stats.last?.let { getString(R.string.kg_value, it.lbmKg) } ?: getString(R.string.empty_lbm)
         )
         showSecurityStatus()
-        binding.logoutButton.setOnClickListener { logout() }
     }
 
     private fun showSecurityStatus() {

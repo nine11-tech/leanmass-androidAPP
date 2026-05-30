@@ -42,7 +42,13 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        user?.let { refreshStats(it.id) }
+        user = AppDependencies.authRepository(this).currentUser()
+        val currentUser = user
+        if (currentUser == null) {
+            redirectToLogin()
+            return
+        }
+        refreshStats(currentUser.id)
     }
 
     private fun calculate() {
@@ -60,10 +66,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         val gender = if (binding.genderToggle.checkedButtonId == R.id.femaleButton) Gender.FEMALE else Gender.MALE
+        val currentUser = user ?: run {
+            redirectToLogin()
+            return
+        }
         val calculation = AppDependencies.calculationRepository(this)
-            .calculateAndSave(user!!.id, weight, height, gender)
+            .calculateAndSave(currentUser.id, weight, height, gender)
         showResult(calculation)
-        refreshStats(user!!.id)
+        refreshStats(currentUser.id)
         Snackbar.make(binding.root, getString(R.string.calculation_saved), Snackbar.LENGTH_SHORT).show()
     }
 

@@ -4,17 +4,14 @@ import android.content.ContentValues
 import com.anass.leanmasscalculator.core.model.Gender
 import com.anass.leanmasscalculator.data.local.db.LeanMassDatabaseHelper
 import com.anass.leanmasscalculator.data.local.entity.CalculationEntity
+import com.anass.leanmasscalculator.util.SecureCrypto
+import org.json.JSONObject
 
 class CalculationDao(private val dbHelper: LeanMassDatabaseHelper) {
     fun insert(calculation: CalculationEntity): Long {
         val values = ContentValues().apply {
             put("user_id", calculation.userId)
-            put("weight_kg", calculation.weightKg)
-            put("height_cm", calculation.heightCm)
-            put("gender", calculation.gender.name)
-            put("lbm_kg", calculation.lbmKg)
-            put("is_satisfactory", if (calculation.isSatisfactory) 1 else 0)
-            put("message", calculation.message)
+            put("payload_enc", SecureCrypto.encrypt(calculation.toPayload()))
             put("created_at", calculation.createdAt)
         }
         return dbHelper.writableDatabase.insertOrThrow("calculations", null, values)
@@ -57,33 +54,77 @@ class CalculationDao(private val dbHelper: LeanMassDatabaseHelper) {
 
     fun statsForUser(userId: Long): CalculationStats {
         val total = dbHelper.readableDatabase.rawQuery(
-            "SELECT COUNT(*) AS total, AVG(lbm_kg) AS average_lbm FROM calculations WHERE user_id = ?",
+            "SELECT COUNT(*) AS total FROM calculations WHERE user_id = ?",
             arrayOf(userId.toString())
         ).use { cursor ->
-            if (cursor.moveToFirst()) {
-                val count = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
-                val average = if (cursor.isNull(cursor.getColumnIndexOrThrow("average_lbm"))) null else cursor.getDouble(cursor.getColumnIndexOrThrow("average_lbm"))
-                count to average
-            } else {
-                0 to null
-            }
+            if (cursor.moveToFirst()) cursor.getInt(cursor.getColumnIndexOrThrow("total")) else 0
         }
-        val last = findAllForUser(userId).firstOrNull()
-        return CalculationStats(total = total.first, averageLbm = total.second, last = last)
+        val average = averageLbmForUser(userId)
+        val last = latestForUser(userId)
+        return CalculationStats(total = total, averageLbm = average, last = last)
     }
 
     private fun android.database.Cursor.toCalculationEntity(): CalculationEntity {
+        val payload = JSONObject(SecureCrypto.decrypt(getString(getColumnIndexOrThrow("payload_enc"))))
         return CalculationEntity(
             id = getLong(getColumnIndexOrThrow("id")),
             userId = getLong(getColumnIndexOrThrow("user_id")),
-            weightKg = getDouble(getColumnIndexOrThrow("weight_kg")),
-            heightCm = getDouble(getColumnIndexOrThrow("height_cm")),
-            gender = Gender.valueOf(getString(getColumnIndexOrThrow("gender"))),
-            lbmKg = getDouble(getColumnIndexOrThrow("lbm_kg")),
-            isSatisfactory = getInt(getColumnIndexOrThrow("is_satisfactory")) == 1,
-            message = getString(getColumnIndexOrThrow("message")),
+            weightKg = payload.getDouble("weightKg"),
+            heightCm = payload.getDouble("heightCm"),
+            gender = Gender.valueOf(payload.getString("gender")),
+            lbmKg = payload.getDouble("lbmKg"),
+            isSatisfactory = payload.getBoolean("isSatisfactory"),
+            message = payload.getString("message"),
             createdAt = getLong(getColumnIndexOrThrow("created_at"))
         )
+    }
+
+    private fun latestForUser(userId: Long): CalculationEntity? {
+        return dbHelper.readableDatabase.query(
+            "calculations",
+            null,
+            "user_id = ?",
+            arrayOf(userId.toString()),
+            null,
+            null,
+            "created_at DESC",
+            "1"
+        ).use { cursor ->
+            if (cursor.moveToFirst()) cursor.toCalculationEntity() else null
+        }
+    }
+
+    private fun averageLbmForUser(userId: Long): Double? {
+        var total = 0.0
+        var count = 0
+        dbHelper.readableDatabase.query(
+            "calculations",
+            arrayOf("payload_enc"),
+            "user_id = ?",
+            arrayOf(userId.toString()),
+            null,
+            null,
+            null
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                val payload = JSONObject(SecureCrypto.decrypt(cursor.getString(cursor.getColumnIndexOrThrow("payload_enc"))))
+                total += payload.getDouble("lbmKg")
+                count++
+            }
+        }
+        return if (count == 0) null else total / count
+    }
+
+    private fun CalculationEntity.toPayload(): String {
+        return JSONObject()
+            .put("weightKg", weightKg)
+            .put("heightCm", heightCm)
+            .put("gender", gender.name)
+            .put("lbmKg", lbmKg)
+            .put("isSatisfactory", isSatisfactory)
+            .put("message", message)
+            .put("createdAt", createdAt)
+            .toString()
     }
 }
 
